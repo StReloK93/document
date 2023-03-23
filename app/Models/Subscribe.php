@@ -19,6 +19,9 @@ class Subscribe extends Model
         'check',
     ];
 
+    protected $casts = [
+        'check' => 'integer',
+    ];
 
     public function position()
     {

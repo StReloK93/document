@@ -48,13 +48,15 @@ class DocumentController extends Controller
         $imgName = Auth::user()->id . time(). $request->pdf->getClientOriginalName();
         $request->pdf->move('pdf',$imgName);
 
+        $term = $request->term == 'null' ? null : $request->term;
+
         $doc =  Document::create([
             'name' => $request->name,
             'organization_id' => $request->organization_id,
             'reject_type_id' => $request->reject_type_id,
             'user_id' => Auth::user()->id,
             'src' => $imgName,
-            'term' => $request->term,
+            'term' => $term,
         ]);
 
         
@@ -82,8 +84,6 @@ class DocumentController extends Controller
 
     
     public function update($id, Request $request){
-        // return $request->all();
-
         $doc = Document::where([
             ['id', $id],
             ['user_id', Auth::user()->id],
@@ -129,13 +129,13 @@ class DocumentController extends Controller
         }
         // Images
 
+        $term = $request->term == 'null' ? null : $request->term;
 
         $doc->name = $request->name;
         $doc->organization_id = $request->organization_id;
         $doc->reject_type_id = $request->reject_type_id;
-        $doc->term = $request->term;
+        $doc->term = $term;
         $doc->save();
-
 
         return $doc->fresh();
 

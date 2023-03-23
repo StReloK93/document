@@ -59,6 +59,14 @@
                                 {{ moment(pageData.selected.created_at).format('DD.MM.YYYY HH:mm') }}
                             </div>
                         </main>
+                        <main class="mb-3">
+                            <label class="block text-gray-500 text-sm mb-2">
+                                Muddati
+                            </label>
+                            <div v-if="pageData.selected">
+                                {{ moment(pageData.selected.term).format('DD.MM.YYYY') }}
+                            </div>
+                        </main>
                         <main class="mb-4 flex justify-between">
                             <button @click="pdfcanvas.print()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
                                 <i class="fa-solid fa-print text-pink-500"></i>

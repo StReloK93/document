@@ -19,15 +19,15 @@ class MainSeeder extends Seeder
      */
     public function run()
     {
-        Position::factory()->count(5)
-        ->state(new Sequence(
-            ['name' => 'SHKB Direktori'],
-            ['name' => "MM bo'yicha direktor o'rinbosari"],
-            ['name' => "Kadrlar bo'limi boshlig'i"],
-            ['name' => 'Inspektor'],
-            ['name' => 'Korxona rahbari'],
-        ))
-        ->create();
+        // Position::factory()->count(5)
+        // ->state(new Sequence(
+        //     ['name' => 'SHKB Direktori'],
+        //     ['name' => "MM bo'yicha direktor o'rinbosari"],
+        //     ['name' => "Kadrlar bo'limi boshlig'i"],
+        //     ['name' => 'Inspektor'],
+        //     ['name' => 'Korxona rahbari'],
+        // ))
+        // ->create();
 
         Organization::factory()->count(21)->state(new Sequence(
             ['bool' => false],
@@ -35,12 +35,12 @@ class MainSeeder extends Seeder
         ))
         ->create();
 
-        RejectTypes::factory()->count(3)->state(new Sequence(
-            ['name' => 'Ishga kirish'],
-            ['name' => "Ishdan ketish"],
-            ['name' => "Lavozimni o'zgartirish"],
-        ))
-        ->create();
+        // RejectTypes::factory()->count(3)->state(new Sequence(
+        //     ['name' => 'Ishga kirish'],
+        //     ['name' => "Ishdan ketish"],
+        //     ['name' => "Lavozimni o'zgartirish"],
+        // ))
+        // ->create();
 
 
         Roll::factory()->count(4)->state(new Sequence(

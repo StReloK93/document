@@ -13,7 +13,7 @@
 						<main class="text-center font-sans">
 							"Hujjatlarni tasdiqlash tizimi" <span class="font-normal">ga</span>  <br>
 							<span class="font-normal">
-								 hush kelibsiz
+								xush kelibsiz
 							</span>
 							<div>
 								<i class="fa-solid fa-pen-nib text-[100px] mt-10"></i>

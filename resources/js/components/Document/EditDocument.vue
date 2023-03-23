@@ -101,6 +101,9 @@
                             </VueSelect>
                         </div>
                         <div class="mb-3">
+                            <label class="text-gray-400">
+                                Muddati
+                            </label>
                             <input
                                 type="date"
                                 class="border-b p-2 outline-none w-full text-sm"

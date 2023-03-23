@@ -19,7 +19,7 @@ class CreateDocumentsTable extends Migration
             $table->string('reject_type_id');
             $table->string('organization_id');
             $table->string('user_id');
-            $table->date('term')->nullable();
+            $table->timestamp('term')->nullable();
             $table->string('src');
             $table->timestamps();
         });

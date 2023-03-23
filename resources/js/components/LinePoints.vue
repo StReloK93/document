@@ -10,7 +10,7 @@
                     :class="[
                         {'cursor-pointer hover:!border-gray-200 hover:!bg-white bg-indigo-900 !border-indigo-900 shadow': patuser.check && store.getters.userPositions.includes(patuser.position.id) },
                         {'bg-indigo-900 !border-indigo-900 shadow': patuser.check && !store.getters.userPositions.includes(patuser.position.id)},
-                        {'!border-indigo-900 shadow': index != 0 && pattern.positions[redalert(index)].check},
+                        {'!border-indigo-900 shadow': index != 0 && +pattern.positions[redalert(index)].check},
                         getId(index)
                     ]"
 
