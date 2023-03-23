@@ -10,7 +10,7 @@
                     :class="[
                         {'cursor-pointer hover:!border-gray-200 hover:!bg-white bg-indigo-900 !border-indigo-900 shadow': patuser.check && store.getters.userPositions.includes(patuser.position.id) },
                         {'bg-indigo-900 !border-indigo-900 shadow': patuser.check && !store.getters.userPositions.includes(patuser.position.id)},
-                        {'!border-indigo-900 shadow': index != 0 && pattern.positions[index - 1].check},
+                        {'!border-indigo-900 shadow': index != 0 && pattern.positions[redalert(index)].check},
                         getId(index)
                     ]"
 
@@ -39,19 +39,23 @@ const store = useStore()
 
 const { pattern, number , clickable } = defineProps(['pattern', 'number', 'clickable'])
 
-const randomId = ref(`list${number}`)
-const before = ref(`before${number}`)
+const randomId:any = ref(`list${number}`)
+const before:any = ref(`before${number}`)
 
 function getId(index) {
     if (index == 0 || index == 1) return randomId.value
 }
 
+function redalert(index){
+    return index - 1
+}
+
 function resizer() {
     const points: any = document.getElementsByClassName(randomId.value)
     if(points.length < 2) return
-    const distance = getDistanceBetweenElements(points[0], points[1])
+    const distance: any = getDistanceBetweenElements(points[0], points[1])
 
-    const pointWidht = points[0].offsetWidth - 4
+    const pointWidht: any = points[0].offsetWidth - 4
     const lines = document.getElementsByClassName(before.value)
     for (let index = 0; index < lines.length; index++) {
         const element = lines[index] as HTMLDivElement

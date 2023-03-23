@@ -19,7 +19,7 @@ import axios from '../../modules/axios'
 import { useStore } from 'vuex'
 const store = useStore()
 const { rolls, formdata, access , added } = defineProps(['rolls', 'formdata', 'access', 'added'])
-const icons = ['fa-user-plus', 'fa-pen-nib', 'fa-trash', 'fa-screwdriver-wrench']
+const icons: any = ['fa-user-plus', 'fa-pen-nib', 'fa-trash', 'fa-screwdriver-wrench']
 
 
 
