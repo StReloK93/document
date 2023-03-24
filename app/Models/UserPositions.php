@@ -17,5 +17,7 @@ class UserPositions extends Model
 
     protected $casts = [
         'position_id' => 'integer',
+        'user_id' => 'integer',
     ];
+    
 }

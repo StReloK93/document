@@ -215,7 +215,8 @@ const thisIsChecked = computed(() => {
 const Confirmtrue = computed(() => {
     const subscribes = pageData.selected?.positions.map((pos) => pos.position_id)
     const userpos = store.getters.userPositions.filter(posid => subscribes.includes(posid))
-
+    console.log(subscribes);
+    
     const allChecked = pageData.selected?.positions.map((pos) => {
         if (pos.check) return pos.position_id
         else return false

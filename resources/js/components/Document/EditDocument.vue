@@ -138,6 +138,7 @@
 <script setup lang="ts">
 import VuePdfEmbed from 'vue-pdf-embed'
 import { reactive, watch } from 'vue'
+import moment from 'moment'
 import UploadImage from '../UploadImage.vue'
 import axios from '../../modules/axios'
 import Loader from '../Loader.vue';
@@ -153,7 +154,7 @@ axios.get(`documents/${id}`).then(({data}) => {
     formData.reject_type = data.reject_type
     formData.positions = data.positions.map(position => position.position)
     formData.images = data.images
-    formData.term = data.term
+    formData.term = moment(data.term).format('YYYY-MM-DD')
 })
 
 const pageData: any = reactive({

@@ -88,7 +88,6 @@ class DocumentController extends Controller
             ['id', $id],
             ['user_id', Auth::user()->id],
         ])->first();
-
         // Positions subscribes
         $doc->positions()->delete();
         $positions = json_decode($request->positions);
@@ -112,11 +111,15 @@ class DocumentController extends Controller
 
 
         // Images
-        $images = Image::where('document_id', $doc->id)->whereNotIn('id', $request->images)->get();
-        foreach ($images as $key => $image) {
-            Library::clearImgFile($image->path);
+        if($request->images){
+            $images = Image::where('document_id', $doc->id)->whereNotIn('id', $request->images)->get();
+
+            foreach ($images as $key => $image) {
+                Library::clearImgFile($image->path);
+            }
+            Image::where('document_id', $doc->id)->whereNotIn('id', $request->images)->delete();
         }
-        Image::where('document_id', $doc->id)->whereNotIn('id', $request->images)->delete();
+
 
         if($request->imgs){
             $imgs = Library::createImages($request->imgs, Auth::user()->id);

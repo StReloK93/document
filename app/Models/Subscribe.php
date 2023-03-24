@@ -21,6 +21,8 @@ class Subscribe extends Model
 
     protected $casts = [
         'check' => 'integer',
+        'position_id' => 'integer',
+        'document_id' => 'integer',
     ];
 
     public function position()
