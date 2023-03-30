@@ -158,7 +158,7 @@ axios.get('documents').then(({ data:documents }) => {
     pageData.all = documents.length
 
     pageData.succes = documents.filter( (doc) => doc.positions.every(item => item.check == true) ).length
-    pageData.active = documents.filter( (doc) => doc.positions.every(item => item.check != true) ).length
+    pageData.active = documents.filter( (doc) => doc.positions.every(item => item.check == true) == false ).length
     
 })
 
