@@ -12,4 +12,8 @@ class NameOrganization extends Model
     protected $connection= 'tatil';
 
     protected $table = 'organizations';
+
+    protected $casts = [
+        'organization_id' => 'integer',
+    ];
 }

@@ -1,7 +1,7 @@
 <template>
-    <section @click="emit('close')"
+    <section @mousedown="emit('close')"
         class="absolute-black-full p-8 flex justify-end rounded-sm shadow-sm">
-        <form @submit.prevent="editDocument" @click.stop class="w-[1080px] bg-white flex flex-col relative">
+        <form @submit.prevent="editDocument" @mousedown.stop class="w-[1080px] bg-white flex flex-col relative">
             <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader>
             <header class="flex justify-between bg-gray-100 relative z-[1001]">
                 <span class="px-4 py-1.5 text-gray-500">
@@ -31,7 +31,7 @@
                             <i class="fa-light fa-file-pdf text-xl mr-4 text-pink-500"></i>  Hujjat matnini tanlang
                         </label>
                     </div>
-                    <main v-if="formData.images.length" class="h-1/2 relative">
+                    <main class="h-1/2 relative">
                         <aside class="absolute pt-4 top-0 left-0 h-full w-full overflow-y-auto">
                             <UploadImage :formData="formData"></UploadImage>
                         </aside>

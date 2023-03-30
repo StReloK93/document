@@ -11,4 +11,8 @@ class Organization extends Model
 
 
     protected $fillable = ['bool'];
+
+    protected $casts = [
+        'organization_id' => 'integer',
+    ];
 }

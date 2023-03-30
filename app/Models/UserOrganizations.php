@@ -9,6 +9,10 @@ class UserOrganizations extends Model
 {
     use HasFactory;
 
+    protected $with = [
+        'organization'
+    ];
+
     protected $fillable = [
         'user_id',
         'organization_id'
@@ -17,4 +21,9 @@ class UserOrganizations extends Model
     protected $casts = [
         'organization_id' => 'integer',
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(NameOrganization::class);
+    }
 }

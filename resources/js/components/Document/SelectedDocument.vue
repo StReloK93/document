@@ -59,11 +59,11 @@
                                 {{ moment(pageData.selected.created_at).format('DD.MM.YYYY HH:mm') }}
                             </div>
                         </main>
-                        <main class="mb-3">
+                        <main v-if="pageData.selected.term" class="mb-3">
                             <label class="block text-gray-500 text-sm mb-2">
                                 Muddati
                             </label>
-                            <div v-if="pageData.selected">
+                            <div>
                                 {{ moment(pageData.selected.term).format('DD.MM.YYYY') }}
                             </div>
                         </main>
@@ -103,7 +103,7 @@
                         </main>
                     </div>
                 </section>
-                <section class="h-44 p-4 flex flex-col justify-between">
+                <section class="h-52 p-4 flex flex-col justify-between">
                     <main class="pb-3">
                         <LinePoints @subscribe="(patuser) => confirm(patuser, null)" :pattern="pageData.selected"
                             :number="Math.random()" :clickable="pageData.selected.backup == null"></LinePoints>
@@ -215,8 +215,6 @@ const thisIsChecked = computed(() => {
 const Confirmtrue = computed(() => {
     const subscribes = pageData.selected?.positions.map((pos) => pos.position_id)
     const userpos = store.getters.userPositions.filter(posid => subscribes.includes(posid))
-    console.log(subscribes);
-    
     const allChecked = pageData.selected?.positions.map((pos) => {
         if (pos.check) return pos.position_id
         else return false

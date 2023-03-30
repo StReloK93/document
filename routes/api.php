@@ -86,4 +86,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('backup/{document_id}', [BackupController::class, 'add']);
     Route::delete('backup/{id}', [BackupController::class, 'remove']);
+
+
+
+    Route::get('document/permonth', [DocumentController::class, 'permonth']);
+    Route::get('document/perorganizations', [DocumentController::class, 'perorganizations']);
+    Route::get('document/pertypes', [DocumentController::class, 'pertypes']);
+    Route::get('document/pertypesmonth', [DocumentController::class, 'pertypesmonth']);
 });

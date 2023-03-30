@@ -27,6 +27,9 @@ export default createStore({
         userRolls (state:any) {
             return state.user.rolls.map((roll) => roll.roll_id)
         },
+        userOrganizations (state:any) {
+            return state.user.organizations
+        },
     },
     actions: {
 

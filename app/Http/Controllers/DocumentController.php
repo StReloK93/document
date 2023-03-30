@@ -8,6 +8,7 @@ use App\Models\Document;
 use App\Models\Subscribe;
 use App\Models\Negation;
 use App\Models\Image;
+use DB;
 use Auth;
 use File;
 class DocumentController extends Controller
@@ -119,6 +120,13 @@ class DocumentController extends Controller
             }
             Image::where('document_id', $doc->id)->whereNotIn('id', $request->images)->delete();
         }
+        else{
+            $images = Image::where('document_id', $doc->id)->get();
+            foreach ($images as $key => $image) {
+                Library::clearImgFile($image->path);
+            }
+            Image::where('document_id', $doc->id)->delete();
+        }
 
 
         if($request->imgs){
@@ -174,5 +182,32 @@ class DocumentController extends Controller
             ];
         }
         return $arr;
+    }
+
+
+
+
+    public function permonth(){
+        return Document::myOrganizations()->has('negation', '=' , 0)->has('backup', '=' , 0)->get()->groupBy(function($item) {
+            return (int) $item->created_at->format('m');
+        });
+    }
+
+    public function perorganizations(){
+        return Document::myOrganizations()->has('negation', '=' , 0)->has('backup', '=' , 0)->get()->groupBy(function($item) {
+            return $item->organization->shortname;
+        });
+    }
+
+    public function pertypes(){
+        return Document::myOrganizations()->has('negation', '=' , 0)->has('backup', '=' , 0)->get()->groupBy(function($item) {
+            return $item->reject_type->name;
+        });
+    }
+
+    public function pertypesmonth(){
+        return Document::myOrganizations()->has('negation', '=' , 0)->has('backup', '=' , 0)->get()->groupBy(function($item) {
+            return (int) $item->created_at->format('m');
+        });
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Position;
 use App\Models\UserPositions;
 use App\Models\Subscribe;
+use App\Models\PatternUser;
 class PositionController extends Controller
 {
     public function index(){
@@ -26,8 +27,9 @@ class PositionController extends Controller
     }
 
     public function destroy($id){
-        UserPositions::where('position_id', $id)->delete;
-        Subscribe::where('position_id', $id)->delete;
-        return Position::find($id)->delete();
+        UserPositions::where('position_id', $id)->delete();
+        Subscribe::where('position_id', $id)->delete();
+        PatternUser::where('position_id', $id)->delete();
+        return Position::destroy($id);
     }
 }

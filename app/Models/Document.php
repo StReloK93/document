@@ -28,11 +28,23 @@ class Document extends Model
         'src',
     ];
 
+    protected $casts = [
+        'organization_id' => 'integer',
+    ];
+
     public function scopeForMyPositions($query){
         $query->whereHas('positions', function (Builder $query) {
             $positions = Auth::user()->positions()->pluck('position_id')->toArray();
             $query->whereIn('position_id', $positions);
         });
+    }
+
+    public function scopeMyOrganizations($query){
+        $organs = array_map(function($organ){
+            return $organ['organization_id'];
+        }, Auth::user()->organizations->toArray() );
+
+        $query->whereIn('organization_id', $organs);
     }
 
 

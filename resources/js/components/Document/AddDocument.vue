@@ -1,7 +1,7 @@
 <template>
-    <section @click="emit('close')"
+    <section @mousedown="emit('close')"
         class="absolute-black-full p-8 flex justify-end rounded-sm shadow-sm">
-        <form @submit.prevent="addDocument" @click.stop class="w-[1080px] bg-white flex flex-col relative">
+        <form @submit.prevent="addDocument" @mousedown.stop class="w-[1080px] bg-white flex flex-col relative">
             <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader>
             <header class="flex justify-between bg-gray-100 relative z-[1001]">
                 <span class="px-4 py-1.5 text-gray-500">

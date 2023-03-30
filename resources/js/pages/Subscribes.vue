@@ -87,5 +87,5 @@ function deleted(selected:any){
 
 }
 
-axios.get('pattern').then(({data}) => pageData.patterns = data )
+axios.get('pattern').then(({data}) => {pageData.patterns = data; console.log(data) })
 </script>

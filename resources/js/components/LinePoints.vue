@@ -17,7 +17,7 @@
                     :title="patuser.check ? 'Tasdiqlandi: ' + moment(patuser.updated_at).format('DD.MM.YYYY H:m'): ''"
                     class="w-7 h-7 shadow-indigo-400 border-4 border-gray-200 relative opacity-[0.99] rounded-full mb-2  text-center transition-all duration-500"
                 >
-                    <i v-if="patuser.check" class="fa-regular fa-check text-white relative -top-px"></i>
+                    <i v-if="patuser.check" class="fa-regular fa-check text-white relative -top-[3px] text-xs"></i>
                     <div v-if="pattern.positions.length - 1 != index" :class="[{'!bg-indigo-900': patuser.check }, before]"
                         class="before bg-gray-200 transition-all duration-500"></div>
                 </main>

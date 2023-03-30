@@ -16,7 +16,7 @@ class PatternController extends Controller
 
     public function show($id){
 
-        return Pattern::with(['reject'])->where('reject_type_id', $id)->get();
+        return Pattern::where('user_id', Auth::user()->id)->with(['reject'])->where('reject_type_id', $id)->get();
         
     }
 
