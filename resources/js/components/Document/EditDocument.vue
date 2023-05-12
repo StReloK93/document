@@ -1,7 +1,7 @@
 <template>
     <section @mousedown="emit('close')"
         class="absolute-black-full p-8 flex justify-end rounded-sm shadow-sm">
-        <form @submit.prevent="editDocument" @mousedown.stop class="w-[1080px] bg-white flex flex-col relative">
+        <form @submit.prevent="editDocument" @mousedown.stop class="w-[1280px] bg-white flex flex-col relative">
             <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader>
             <header class="flex justify-between bg-gray-100 relative z-[1001]">
                 <span class="px-4 py-1.5 text-gray-500">
@@ -12,7 +12,9 @@
                 </button>
             </header>
             <footer v-if="pageData.selected" class="flex-grow flex p-4 shadow-sm">
-                <main class="w-3/5 pr-4 overflow-y-auto">
+                <!-- {{ formData.html }} -->
+                <TextRedactor v-if="formData.html" class="mr-4" v-model="formData.html" :editable="true"></TextRedactor>
+                <!-- <main class="w-3/5 pr-4 overflow-y-auto">
                     <div class="h-1/2 relative" v-if="pageData.pdf">
                         <button type="button" class="absolute top-0 right-0 z-50" @click="pageData.pdf = null">
                             <i class="fa-light fa-xmark text-gray-600 py-1 px-2"></i>
@@ -36,8 +38,8 @@
                             <UploadImage :formData="formData"></UploadImage>
                         </aside>
                     </main>
-                </main>
-                <section class="w-2/5 flex flex-col justify-between pl-4 border-l -my-3 py-3">
+                </main> -->
+                <section class="flex-grow flex flex-col justify-between pl-4 border-l -my-3 py-3">
                     <main>
                         <div class="mb-3">
                             <input
@@ -112,6 +114,11 @@
                             >
                         </div>
                     </main>
+                    <section class="flex-grow relative">
+                        <aside class="absolute top-0 left-0 h-full w-full overflow-y-auto">
+                            <UploadImage :formData="formData"></UploadImage>
+                        </aside>
+                    </section>
                 </section>
             </footer>
             <Loader v-else class="flex-grow absolute top-0 left-0 w-full h-full bg-white z-[1000]"></Loader>
@@ -136,6 +143,7 @@
 </template>
 
 <script setup lang="ts">
+import TextRedactor from '../TextRedactor.vue'
 import VuePdfEmbed from 'vue-pdf-embed'
 import { reactive, watch } from 'vue'
 import moment from 'moment'
@@ -150,11 +158,12 @@ axios.get(`documents/${id}`).then(({data}) => {
     pageData.selected = data
     pageData.pdf = '/pdf/' + data.src
     formData.name = data.name
+    formData.html = JSON.parse(data.html)
     formData.organization = data.organization
     formData.reject_type = data.reject_type
     formData.positions = data.positions.map(position => position.position)
     formData.images = data.images
-    formData.term = moment(data.term).format('YYYY-MM-DD')
+    formData.term = data.term ? moment(data.term).format('YYYY-MM-DD') : null
 })
 
 const pageData: any = reactive({
@@ -192,6 +201,7 @@ function editDocument() {
     const Form = new FormData()
     Form.append('pdf', formData.pdf)
     Form.append('term', formData.term)
+    Form.append('html', JSON.stringify(formData.html))
     Form.append('organization_id', formData.organization.id)
     Form.append('reject_type_id', formData.reject_type.id)
     Form.append('name', formData.name)

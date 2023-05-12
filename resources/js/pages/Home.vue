@@ -5,7 +5,7 @@
                 <aside class="w-2/5 px-2">
                     <div class="h-40 bg-white bg-opacity-40 p-4 pt-2 shadow-sm text-gray-500 text-sm">
                         <h3 class="mb-1.5 text-gray-600 text-xl">
-                            <i class="fa-regular fa-circle-exclamation text-pink-500"></i> Tizim haqida
+                            <i class="fa-regular fa-circle-exclamation text-pink-500 fa-shake"></i> Tizim haqida
                         </h3>
                         Uchbu tizim Shimoliy kon boshqarmasida ish jarayonida tayyorlangan hujjatlarni
                         tasdiqlash bosqichidan oldin ekspertlar tekshiruvidan o'tkazish uchun mo'ljallangan.

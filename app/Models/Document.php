@@ -24,6 +24,7 @@ class Document extends Model
         'reject_type_id',
         'organization_id',
         'user_id',
+        'html',
         'term',
         'src',
     ];
@@ -46,7 +47,6 @@ class Document extends Model
 
         $query->whereIn('organization_id', $organs);
     }
-
 
 
     public function reject_type()

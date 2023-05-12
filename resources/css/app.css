@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'TextEditor.css';
+
+
 .dx-datagrid .dx-row>td {
     padding: 13px 11px;
 }

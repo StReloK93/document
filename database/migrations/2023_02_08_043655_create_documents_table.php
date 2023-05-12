@@ -20,7 +20,8 @@ class CreateDocumentsTable extends Migration
             $table->string('organization_id');
             $table->string('user_id');
             $table->timestamp('term')->nullable();
-            $table->string('src');
+            $table->string('src')->nullable();
+            $table->json('html')->nullable();
             $table->timestamps();
         });
     }

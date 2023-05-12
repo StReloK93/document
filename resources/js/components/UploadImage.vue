@@ -19,9 +19,9 @@
 			<main class="w-1/2 relative mb-2 after:content-[''] after:float-left after:pt-[80%]" >
 				<label for="fileinp" class="absolute top-0 left-0 w-full h-full px-1">
 					<aside class="w-full h-full bg-gray-100 hover:bg-gray-50 flex-center border-2 border-dashed border-gray-200">
-						<i class="fa-sharp fa-solid fa-image-landscape text-xl text-pink-500 mr-4"></i>
-						<span class="text-gray-500">
-							Hujjat ilovasini tanlang
+						<i class="fa-sharp fa-solid fa-image-landscape text-pink-500 mr-2"></i>
+						<span class="text-gray-500 text-xs">
+							Hujjat ilovasini <br> tanlang
 						</span>
 					</aside>
 				</label>

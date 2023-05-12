@@ -1,6 +1,6 @@
 <template>
     <section @mousedown="emit('close')" class="absolute-black-full p-8 z-50  flex justify-end">
-        <main @mousedown.stop class="bg-white shadow rounded-sm h-full w-[1080px] flex flex-col relative">
+        <main @mousedown.stop class="bg-white shadow rounded-sm h-full w-[1280px] flex flex-col relative">
             <TransitionGroup name="fade">
                 <Negative v-if="pageData.negativeToggle" :document="pageData.selected"
                     @close="pageData.negativeToggle = false" @negatived="negatived">
@@ -21,7 +21,7 @@
             </div>
             <main v-if="pageData.selected" class="h-full flex flex-col">
                 <section class="flex-grow flex relative">
-                    <div class="w-1/3 p-4 pt-3 border-b shadow-sm h-full">
+                    <div class="flex-grow p-4 pt-3 border-b shadow-sm h-full">
                         <main class="mb-4 border-b border-gray-100 pb-3">
                             <p>
                                 <i class="fa-duotone fa-user-tie text-pink-600 mr-3"></i> {{ pageData.selected.user.name }}
@@ -68,7 +68,7 @@
                             </div>
                         </main>
                         <main class="mb-4 flex justify-between">
-                            <button @click="pdfcanvas.print()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
+                            <button @click="redactor.PrintElem()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
                                 <i class="fa-solid fa-print text-pink-500"></i>
                             </button>
                             <button v-if="pageData.selected.images.length" @click="pageData.imagesToggle = true"
@@ -97,11 +97,7 @@
                             </main>
                         </main>
                     </div>
-                    <div class="w-2/3 border-b shadow-sm relative">
-                        <main class="h-full w-full overflow-x-auto absolute top-0 left-0 p-4">
-                            <VuePdfEmbed :source="pageData.pdfFile" class="h-full" ref="pdfcanvas"></VuePdfEmbed>
-                        </main>
-                    </div>
+                    <TextRedactor ref="redactor" class="h-full" v-model="pageData.selected.html" :editable="false"></TextRedactor>
                 </section>
                 <section class="h-52 p-4 flex flex-col justify-between">
                     <main class="pb-3">
@@ -132,7 +128,7 @@
                             </button>
                         </aside>
                         <aside v-else></aside>
-                        <aside v-if="pageData.selected.backup == null" class="flex">
+                        <aside v-if="pageData.selected.backup == null && issetPosition" class="flex">
                             <main v-if="$route.name != 'finished'">
                                 <button v-if="pageData.selected.negation" @click="allow(pageData.selected.negation)"
                                     class="px-5 py-1.5 rounded-sm shadow bg-pink-600  hover:bg-pink-500 text-white">
@@ -162,11 +158,11 @@
         </main>
     </section>
 </template>
-
 <script setup lang="ts">
 import Negative from './Negative.vue'
 import Backup from './Backup.vue'
 import VuePdfEmbed from 'vue-pdf-embed'
+import TextRedactor from '../TextRedactor.vue'
 import axios from '../../modules/axios'
 import LinePoints from '../LinePoints.vue'
 import Caruosel from '../Caruosel.vue'
@@ -175,12 +171,19 @@ import moment from 'moment'
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 const emit = defineEmits(['close', 'deleted', 'subscribe', 'edit'])
+
+const redactor = ref()
 const pdfcanvas = ref()
 const { id, grid } = defineProps(['id', 'grid'])
 const store = useStore()
 
 axios.get(`documents/${id}`).then(({ data }) => {
     pageData.selected = data
+    
+    pageData.selected.html = JSON.parse(pageData.selected.html)
+    console.log(pageData.selected.html)
+
+    
     pageData.pdfFile = '/pdf/' + data.src
 })
 
@@ -190,7 +193,8 @@ const pageData: any = reactive({
     pdfFile: null,
     selected: null,
     negativeToggle: false,
-    backupToggle: false
+    backupToggle: false,
+    html: []
 })
 
 function allow(negation) {
@@ -224,6 +228,11 @@ const Confirmtrue = computed(() => {
 })
 
 
+const issetPosition = computed(() => {
+    const filtered = pageData.selected?.positions.filter((position) => store.getters.userPositions.includes(position.position_id))
+    if(filtered) return filtered.length
+    else return [].length
+})
 
 
 function confirm(patuser, bool) {

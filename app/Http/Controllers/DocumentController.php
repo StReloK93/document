@@ -46,8 +46,10 @@ class DocumentController extends Controller
 
     public function store(Request $request){
 
-        $imgName = Auth::user()->id . time(). $request->pdf->getClientOriginalName();
-        $request->pdf->move('pdf',$imgName);
+        // if($request->pdf){
+        //     $imgName = Auth::user()->id . time(). $request->pdf->getClientOriginalName();
+        //     $request->pdf->move('pdf',$imgName);
+        // }
 
         $term = $request->term == 'null' ? null : $request->term;
 
@@ -55,8 +57,9 @@ class DocumentController extends Controller
             'name' => $request->name,
             'organization_id' => $request->organization_id,
             'reject_type_id' => $request->reject_type_id,
+            'html' => $request->html,
             'user_id' => Auth::user()->id,
-            'src' => $imgName,
+            // 'src' => $imgName,
             'term' => $term,
         ]);
 
@@ -79,6 +82,7 @@ class DocumentController extends Controller
         }
 
         return Document::find($doc->id);
+
     }
 
 
@@ -143,6 +147,8 @@ class DocumentController extends Controller
         $term = $request->term == 'null' ? null : $request->term;
 
         $doc->name = $request->name;
+        $doc->html = $request->html;
+        
         $doc->organization_id = $request->organization_id;
         $doc->reject_type_id = $request->reject_type_id;
         $doc->term = $term;

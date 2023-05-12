@@ -13,7 +13,6 @@ import "vue-multiselect/dist/vue-multiselect.css"
 import 'swiper/css/pagination'
 import 'swiper/css'
 
-
 store.dispatch('getUser').then(() =>{
     createApp(App)
     .component('AgGrid', AgGridVue)

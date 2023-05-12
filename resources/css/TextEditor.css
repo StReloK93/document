@@ -1,0 +1,260 @@
+.ruzzifer-editor {
+    font-family: initial;
+    background: #f8f8f8;
+    width: 830px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(241, 241, 241);
+}
+
+.ruzzifer-editor ul , .ruzzifer-editor ol , li{
+    padding: initial;
+    margin: initial;
+    list-style-type: initial;
+}
+.ruzzifer-editor ol li{
+    list-style-type: decimal;
+}
+
+.ruzzifer-editor ul li{
+    list-style-type: inherit;
+}
+
+.ruzzifer-editor * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.ruzzifer-pages {
+    position: relative;
+    flex-grow: 1;
+    overflow-y: auto;
+    align-items: center;
+    padding: 17px 0;
+    justify-content: center;
+}
+
+.ruzzifer-page img {
+    width: 100%;
+}
+
+
+
+.ruzzifer-page {
+    word-wrap: break-word;
+    outline: none;
+    height: 100%;
+    width: 210mm;
+    height: 297mm;
+    margin-bottom: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0 0 1px 0 #cbcbcb;
+    background: white;
+}
+
+
+.ruzzifer-toolbar {
+    width: 100%;
+    background: #fff;
+    padding: 5px;
+}
+
+.ruzzifer-palette-item {
+    height: 1em;
+    border-radius: 3px;
+    margin: 2px;
+    width: 1em;
+    border: 1px solid #CCC;
+}
+
+.ruzzifer-palette-item:hover {
+    border: 1px solid #CCC;
+    box-shadow: 0 0 3px #333;
+}
+
+.ruzzifer-fore-palette,
+.ruzzifer-back-palette {
+    display: none;
+}
+
+.ruzzifer-fore-wrapper,
+.ruzzifer-back-wrapper {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.ruzzifer-fore-wrapper:hover .ruzzifer-fore-palette,
+.ruzzifer-back-wrapper:hover .ruzzifer-back-palette {
+    display: block;
+    float: left;
+    position: absolute;
+    padding: 3px;
+    width: 160px;
+    background: #FFF;
+    border: 1px solid #f1f1f1;
+    box-shadow: 1px 1px 5px 1px #f1f1f1;
+    height: 70px;
+    z-index: 50;
+}
+
+.ruzzifer-fore-palette a,
+.ruzzifer-back-palette a {
+    background: #FFF;
+    margin-bottom: 2px;
+}
+
+.ruzzifer-button {
+    width: 33px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    margin: 0 2.5px;
+    cursor: pointer;
+    color: #555;
+    font-size: 12px;
+}
+
+.ruzzifer-button:hover {
+    box-shadow: 1px 1px 3px 0px #e4e4e4;
+    background: #ececec;
+}
+
+
+/* width */
+.ruzzifer-absolute::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* Track */
+.ruzzifer-absolute::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.ruzzifer-absolute::-webkit-scrollbar-thumb {
+    background: #ffca8d;
+}
+
+/* Handle on hover */
+.ruzzifer-absolute::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.ruzzifer-absolute {
+    padding-top: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.ruzzifer-background{
+    background:rgb(228, 90, 56);
+    color: white;
+    padding: 3px 5px;
+}
+
+.ruzzifer-page-params button{
+    padding: 5px 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ruzzifer-page-params{
+    position: absolute;
+    right: 12px;
+    top: 5px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.ruzzifer-page-menu{
+    border: 1px solid #eee ;
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    width: 150px;
+    box-shadow: 2px 1px 6px 0px #e4e4e4;
+    background: white;
+    z-index: 1001;
+}
+
+.ruzzifer-page-paddings{
+    border: 1px solid #eee ;
+    position: absolute;
+    top: 45px;
+    left: 30px;
+    width: 300px;
+    box-shadow: 2px 1px 6px 0px #e4e4e4;
+    background: white;
+    z-index: 1001;
+    padding-bottom: 10px;
+
+}
+
+.ruzzifer-mini-page{
+    width: 200px;
+    height: 282px;
+    background: rgb(245, 245, 245);
+
+    border: 1px solid #eee;
+}
+
+.ruzzifer-header{
+    display: flex;
+    justify-content: flex-end;
+    background: #f3f4f6;
+}
+
+.ruzzifer-header button{
+    padding: 0.375rem 1rem;
+}
+
+.ruzzifer-page-container{
+    position: relative;
+}
+
+.ruzzifer-page-container table{
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.ruzzifer-page-paddings input{
+    outline: none;
+    border-bottom: 1px solid #eee ;
+    margin: 2px;
+}
+
+@media print {
+    .ruzzifer-header{
+        display: none!important;
+    }
+	.print{
+        display: inherit;
+    }
+
+    .noprint{
+        display: none!important;
+    }
+    .ruzzifer-absolute {
+        padding-top: 0px;
+        position: absolute!important;
+        top: 0;
+        left: 0;
+        overflow-y: inherit!important;
+    }
+
+    .ruzzifer-page {
+        word-wrap: break-word;
+        margin: 0!important;
+    }
+    
+}

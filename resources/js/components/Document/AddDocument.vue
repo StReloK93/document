@@ -1,8 +1,8 @@
 <template>
     <section @mousedown="emit('close')"
         class="absolute-black-full p-8 flex justify-end rounded-sm shadow-sm">
-        <form @submit.prevent="addDocument" @mousedown.stop class="w-[1080px] bg-white flex flex-col relative">
-            <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader>
+        <form @submit.prevent="addDocument" @mousedown.stop class="w-[1280px] bg-white flex flex-col relative">
+            <!-- <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader> -->
             <header class="flex justify-between bg-gray-100 relative z-[1001]">
                 <span class="px-4 py-1.5 text-gray-500">
                     Hujjat qo'shish
@@ -12,7 +12,8 @@
                 </button>
             </header>
             <footer class="flex-grow flex p-4 shadow-sm">
-                <main class="w-3/5 pr-4 overflow-y-auto">
+                <TextRedactor class="mr-4" v-model="formData.html" :editable="true"></TextRedactor>
+                <!-- <main class="w-4/6 pr-4 overflow-y-auto">
                     <div class="h-1/2 pb-4 relative" v-if="pageData.pdf">
                         <button class="absolute top-0 right-0 z-50" @click="closePdf">
                             <i class="fa-light fa-xmark text-gray-600 py-1 px-2"></i>
@@ -36,8 +37,8 @@
                             <UploadImage :formData="formData"></UploadImage>
                         </aside>
                     </main>
-                </main>
-                <section class="w-2/5 flex flex-col justify-between pl-4 border-l -my-3 py-3">
+                </main> -->
+                <section class="flex-grow flex flex-col pl-4 border-l -my-3 py-3">
                     <main>
                         <div class="mb-3">
                             <input
@@ -112,14 +113,19 @@
                             >
                         </div>
                     </main>
+                    <section class="flex-grow relative">
+                        <aside class="absolute top-0 left-0 h-full w-full overflow-y-auto">
+                            <UploadImage :formData="formData"></UploadImage>
+                        </aside>
+                    </section>
                 </section>
             </footer>
             <main class="p-4 flex justify-between items-center h-[68px]">
                 <aside class="inline-flex">
-                    <label for="file" :class="{'bg-pink-500 text-white': pageData.pdf}" class="px-5 py-1.5 text-pink-500 rounded-sm shadow-sm bg-gray-200 h-full block cursor-pointer">
+                    <!-- <label for="file" :class="{'bg-pink-500 text-white': pageData.pdf}" class="px-5 py-1.5 text-pink-500 rounded-sm shadow-sm bg-gray-200 h-full block cursor-pointer">
                         <i class="fa-light fa-file-pdf  relative top-px"></i>
-                    </label>
-                    <label for="fileinp" class="px-5 py-1.5 rounded-sm shadow-sm bg-gray-200 h-full block cursor-pointer ml-4">
+                    </label> -->
+                    <label for="fileinp" class="px-5 py-1.5 rounded-sm shadow-sm bg-gray-200 h-full block cursor-pointer">
                         <i class="fa-sharp fa-solid fa-image-landscape text-pink-500 relative top-px"></i>
                     </label>
                 </aside>
@@ -137,9 +143,24 @@
 import VuePdfEmbed from 'vue-pdf-embed'
 import { reactive, watch } from 'vue'
 import UploadImage from '../UploadImage.vue'
+import TextRedactor from '../TextRedactor.vue'
 import axios from '../../modules/axios'
 
+function closePdf(){
+    pageData.pdf = null
+}
 
+const formData: any = reactive({
+    name: null,
+    organization: null,
+    reject_type: null,
+    pattern: null,
+    positions: null,
+    pdf: null,
+    images: [],
+    term: null,
+    html: [],
+})
 
 const emit = defineEmits(['close', 'created'])
 const pageData: any = reactive({
@@ -151,16 +172,7 @@ const pageData: any = reactive({
     loading: false
 })
 
-const formData: any = reactive({
-    name: null,
-    organization: null,
-    reject_type: null,
-    pattern: null,
-    positions: null,
-    pdf: null,
-    images: [],
-    term: null
-})
+
 
 
 function fileChange(){
@@ -172,9 +184,11 @@ function fileChange(){
 function addDocument() {
     if(pageData.loading == true) return
 
+    
     const Form = new FormData()
     Form.append('pdf', formData.pdf)
     Form.append('term', formData.term)
+    Form.append('html', JSON.stringify(formData.html))
     Form.append('organization_id', formData.organization.id)
     Form.append('reject_type_id', formData.reject_type.id)
     Form.append('name', formData.name)
@@ -194,9 +208,6 @@ function addDocument() {
     })
 }
 
-function closePdf(){
-    pageData.pdf = null
-}
 
 
 axios.all([axios.get('organization/my'), axios.get('reject-type'), axios.get('positions')])
