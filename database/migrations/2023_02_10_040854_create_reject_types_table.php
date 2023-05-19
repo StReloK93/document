@@ -16,6 +16,7 @@ class CreateRejectTypesTable extends Migration
         Schema::create('reject_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->json('html')->nullable();
             $table->timestamps();
         });
     }

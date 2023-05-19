@@ -16,13 +16,20 @@ class RejectTypesController extends Controller
 
     public function store(Request $request){
         return RejectTypes::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
     }
 
     public function update($id, Request $request){
         $type = RejectTypes::find($id);
         $type->name = $request->name;
+        $type->save();
+        return $type;
+    }
+
+    public function updateHtml($id, Request $request){
+        $type = RejectTypes::find($id);
+        $type->html = $request->html;
         $type->save();
         return $type;
     }

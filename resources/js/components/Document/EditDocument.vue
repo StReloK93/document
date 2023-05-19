@@ -11,9 +11,11 @@
                     <i class="fa-light fa-xmark"></i>
                 </button>
             </header>
-            <footer v-if="pageData.selected" class="flex-grow flex p-4 shadow-sm">
-                <!-- {{ formData.html }} -->
-                <TextRedactor v-if="formData.html" class="mr-4" v-model="formData.html" :editable="true"></TextRedactor>
+            <footer v-if="pageData.selected" class="flex-grow flex justify-between p-4 shadow-sm">
+                <div class="h-full">
+                    <TextRedactor v-if="formData.html && pageData.editor" class="mr-4 h-full" v-model="formData.html" :editable="true"></TextRedactor>
+                    <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-else></Loader>
+                </div>
                 <!-- <main class="w-3/5 pr-4 overflow-y-auto">
                     <div class="h-1/2 relative" v-if="pageData.pdf">
                         <button type="button" class="absolute top-0 right-0 z-50" @click="pageData.pdf = null">
@@ -39,7 +41,7 @@
                         </aside>
                     </main>
                 </main> -->
-                <section class="flex-grow flex flex-col justify-between pl-4 border-l -my-3 py-3">
+                <section class="w-[402px] flex flex-col justify-between pl-4 border-l -my-3 py-3">
                     <main>
                         <div class="mb-3">
                             <input
@@ -65,7 +67,9 @@
                             </VueSelect>
                         </div>
                         <div v-if="pageData.reject_types.length" class="mb-3">
-                            <VueSelect 
+                            <VueSelect
+                                @select="changeDocument"
+                                @remove="removeDocument"
                                 v-model="formData.reject_type"
                                 :options="pageData.reject_types"
                                 label="name"
@@ -143,13 +147,10 @@
 </template>
 
 <script setup lang="ts">
-import TextRedactor from '../TextRedactor.vue'
-import VuePdfEmbed from 'vue-pdf-embed'
 import { reactive, watch } from 'vue'
 import moment from 'moment'
 import UploadImage from '../UploadImage.vue'
 import axios from '../../modules/axios'
-import Loader from '../Loader.vue';
 const emit = defineEmits(['close', 'created'])
 const { id , grid } = defineProps(['id','grid'])
 
@@ -167,6 +168,7 @@ axios.get(`documents/${id}`).then(({data}) => {
 })
 
 const pageData: any = reactive({
+    editor: true,
     organizations: [],
     reject_types: [],
     patterns: [],
@@ -221,6 +223,24 @@ function editDocument() {
         console.log(error)
     })
 }
+
+
+function changeDocument(select){
+    if(JSON.parse(select.html) == null ) return
+    
+    pageData.editor = false
+    formData.html = JSON.parse(select.html)
+    setTimeout(() => pageData.editor = true, 250)
+}
+
+function removeDocument(select){
+    if(JSON.parse(select.html) == null ) return
+    
+    pageData.editor = false
+    formData.html = []
+    setTimeout(() => pageData.editor = true, 250)
+}
+
 
 axios.all([axios.get('organization/my'), axios.get('reject-type'), axios.get('positions')])
 .then(axios.spread(({ data: organizations }, { data: reject_types }, {data: positions}) => {

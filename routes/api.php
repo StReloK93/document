@@ -52,8 +52,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('rolls', [RollController::class, 'index']);
 
+    
 
     Route::apiResource('reject-type', RejectTypesController::class)->except(['show']);
+    Route::post('reject-type/updateHtml/{id}', [RejectTypesController::class, 'updateHtml']);
 
     Route::apiResource('positions', PositionController::class);
     Route::apiResource('negationslist', NegationsListController::class);

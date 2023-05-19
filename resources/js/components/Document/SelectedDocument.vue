@@ -181,9 +181,6 @@ axios.get(`documents/${id}`).then(({ data }) => {
     pageData.selected = data
     
     pageData.selected.html = JSON.parse(pageData.selected.html)
-    console.log(pageData.selected.html)
-
-    
     pageData.pdfFile = '/pdf/' + data.src
 })
 

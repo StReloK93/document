@@ -158,7 +158,7 @@ const defaultSet = {
     menuOpened: false,
 }
 
-if(modelValue.length == 0) modelValue[0] = structuredClone(defaultSet)
+if(modelValue == null || modelValue.length == 0) modelValue[0] = structuredClone(defaultSet)
 
 
 function PageCreate(){
@@ -182,7 +182,6 @@ function PageDelete(page){
 }
 
 function PageEdit(event, page) {
-    event.target.selectionStart = event.target.selectionEnd = event.target.innerText.length
     modelValue.forEach(element => {
         if(element == page){
             element.html = event.target.innerHTML
@@ -221,6 +220,8 @@ function PrintElem()
 
     return true;
 }
+
+
 
 defineExpose({ PrintElem })
 

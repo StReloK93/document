@@ -2,7 +2,7 @@
     <section @mousedown="emit('close')"
         class="absolute-black-full p-8 flex justify-end rounded-sm shadow-sm">
         <form @submit.prevent="addDocument" @mousedown.stop class="w-[1280px] bg-white flex flex-col relative">
-            <!-- <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader> -->
+            <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-if="pageData.loading"></Loader>
             <header class="flex justify-between bg-gray-100 relative z-[1001]">
                 <span class="px-4 py-1.5 text-gray-500">
                     Hujjat qo'shish
@@ -11,34 +11,14 @@
                     <i class="fa-light fa-xmark"></i>
                 </button>
             </header>
-            <footer class="flex-grow flex p-4 shadow-sm">
-                <TextRedactor class="mr-4" v-model="formData.html" :editable="true"></TextRedactor>
-                <!-- <main class="w-4/6 pr-4 overflow-y-auto">
-                    <div class="h-1/2 pb-4 relative" v-if="pageData.pdf">
-                        <button class="absolute top-0 right-0 z-50" @click="closePdf">
-                            <i class="fa-light fa-xmark text-gray-600 py-1 px-2"></i>
-                        </button>
-                        <main class="relative h-full">
-                            <div class="absolute top-0 left-0 w-full h-full overflow-x-auto">
-                                <VuePdfEmbed class="h-full" :source="pageData.pdf"></VuePdfEmbed>
-                            </div>
-                        </main>
-                    </div>
-                    <div class="h-1/2 pb-4" v-else>
-                        <input id="file" hidden @change="fileChange" type="file" accept="application/pdf" placeholder="File pdf" required>
-                        <label 
-                            for="file"
-                            class="h-full flex items-center justify-center border-2 border-dashed border-gray-200 text-gray-600 bg-gray-100 shadow-sm hover:bg-gray-50 cursor-pointer">
-                            <i class="fa-light fa-file-pdf text-xl mr-4 text-pink-500"></i>  Hujjat matnini tanlang
-                        </label>
-                    </div>
-                    <main class="h-1/2 relative">
-                        <aside class="absolute top-0 left-0 h-full w-full overflow-y-auto">
-                            <UploadImage :formData="formData"></UploadImage>
-                        </aside>
-                    </main>
-                </main> -->
-                <section class="flex-grow flex flex-col pl-4 border-l -my-3 py-3">
+            <footer class="flex-grow flex justify-between p-4 shadow-sm">
+<!--  -->
+                <div class="h-full">
+                    <TextRedactor class="mr-4 h-full" v-if="pageData.editor" v-model="formData.html" :editable="true" ref="Myredactor"></TextRedactor>
+                    <Loader class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 z-[1000]" v-else></Loader>
+                </div>
+<!--  -->
+                <section class="w-[402px] flex flex-col pl-4 border-l -my-3 py-3">
                     <main>
                         <div class="mb-3">
                             <input
@@ -67,6 +47,8 @@
                             <VueSelect 
                                 v-model="formData.reject_type"
                                 :options="pageData.reject_types"
+                                @select="changeDocument"
+                                @remove="removeDocument"
                                 label="name"
                                 track-by="name"
                                 placeholder="Hujjat turlari"
@@ -140,15 +122,16 @@
 </template>
 
 <script setup lang="ts">
-import VuePdfEmbed from 'vue-pdf-embed'
-import { reactive, watch } from 'vue'
+// import VuePdfEmbed from 'vue-pdf-embed'
+import { reactive, watch , ref } from 'vue'
 import UploadImage from '../UploadImage.vue'
-import TextRedactor from '../TextRedactor.vue'
 import axios from '../../modules/axios'
 
 function closePdf(){
     pageData.pdf = null
 }
+
+const Myredactor = ref()
 
 const formData: any = reactive({
     name: null,
@@ -164,6 +147,7 @@ const formData: any = reactive({
 
 const emit = defineEmits(['close', 'created'])
 const pageData: any = reactive({
+    editor: true,
     organizations: [],
     reject_types: [],
     patterns: [],
@@ -173,6 +157,21 @@ const pageData: any = reactive({
 })
 
 
+function changeDocument(select){
+    if(JSON.parse(select.html) == null ) return
+    
+    pageData.editor = false
+    formData.html = JSON.parse(select.html)
+    setTimeout(() => pageData.editor = true, 250)
+}
+
+function removeDocument(select){
+    if(JSON.parse(select.html) == null ) return
+    
+    pageData.editor = false
+    formData.html = []
+    setTimeout(() => pageData.editor = true, 250)
+}
 
 
 function fileChange(){

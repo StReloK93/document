@@ -6,6 +6,7 @@ import router from "./router/"
 import { AgGridVue } from "ag-grid-vue3"
 import VueSelect from 'vue-multiselect'
 import Loader from './components/Loader.vue'
+import TextRedactor from './components/TextRedactor.vue'
 
 import "ag-grid-community/styles/ag-grid.css"
 import "ag-grid-community/styles/ag-theme-alpine.css"
@@ -18,6 +19,7 @@ store.dispatch('getUser').then(() =>{
     .component('AgGrid', AgGridVue)
     .component('VueSelect', VueSelect)
     .component('Loader', Loader)
+    .component('TextRedactor', TextRedactor)
     .use(store)
     .use(router)
     .mount('#app')
