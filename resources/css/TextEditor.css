@@ -42,6 +42,9 @@
 
 
 .ruzzifer-page {
+    font-size: 14pt;
+    line-height: initial;
+    font-family: initial;
     word-wrap: break-word;
     outline: none;
     height: 100%;

@@ -15,6 +15,7 @@
                 </button>
                 <div class="ruzzifer-back-palette"></div>
             </div>
+
             <button type="button" class="ruzzifer-button" command='bold'>
                 <i class='fa fa-bold'></i>
             </button>
@@ -72,6 +73,18 @@
             <button @click="PrintElem" type="button" class="ruzzifer-button">
                 <i class="fa-regular fa-print"></i>
             </button>
+            <select v-model="selectFont" @input="myFunction" class="border-b py-0.5 outline-none">
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Impact">Impact</option>
+                <option value="Lucida Console">Lucida Console</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Monospace">Monospace</option>
+                <option value="Sans-Serif">Sans Serif</option>
+                <option value="Verdana">Verdana</option>
+            </select>
         </div>
         <main class="ruzzifer-pages" @click="closeAllModals">
             <aside class="ruzzifer-absolute">
@@ -140,10 +153,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import Swal from '../modules/swal'
 const { modelValue, editable } = defineProps(['modelValue', 'editable'])
 
+const selectFont = ref('Times New Roman')
 
 const emit = defineEmits(['update:modelValue'])
 const defaultSet = {
@@ -213,15 +227,19 @@ function PrintElem()
     mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
 
-    setTimeout(() => {
-        mywindow.print()
-        mywindow.close()
-    }, 100)
+    // setTimeout(() => {
+    //     mywindow.print()
+    //     mywindow.close()
+    // }, 100)
 
     return true;
 }
 
-
+function myFunction() {
+        document.execCommand("fontName", false, selectFont.value); //replace monospace with selected font
+        //@ts-ignore
+        window.getSelection().empty(); // unselects the selected text
+    }
 
 defineExpose({ PrintElem })
 
