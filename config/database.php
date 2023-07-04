@@ -95,7 +95,7 @@ return [
         'tatil' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => '192.168.14.6',
+            'host' => '192.168.14.14',
             'port' => '1433',
             'database' => 'tatil',
             'username' => 'tatil',

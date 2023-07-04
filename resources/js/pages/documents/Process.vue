@@ -2,7 +2,7 @@
     <TransitionGroup name="fade">
         <AddDocument
             class="z-50" 
-            v-if="pageData.addDocument" 
+            v-if="pageData.addDocument"
             @close="pageData.addDocument = false"
             @created="created"
         />

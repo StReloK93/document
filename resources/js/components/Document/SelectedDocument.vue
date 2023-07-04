@@ -68,7 +68,7 @@
                             </div>
                         </main>
                         <main class="mb-4 flex justify-between">
-                            <button @click="redactor.PrintElem()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
+                            <button v-if="$route.name == 'finished'" @click="redactor.PrintElem()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
                                 <i class="fa-solid fa-print text-pink-500"></i>
                             </button>
                             <button v-if="pageData.selected.images.length" @click="pageData.imagesToggle = true"
@@ -97,7 +97,7 @@
                             </main>
                         </main>
                     </div>
-                    <TextRedactor ref="redactor" class="h-full" v-model="pageData.selected.html" :editable="false"></TextRedactor>
+                    <TextRedactor ref="redactor" class="h-full" v-model="pageData.selected.html" :selected="pageData.selected" :editable="false"></TextRedactor>
                 </section>
                 <section class="h-52 p-4 flex flex-col justify-between">
                     <main class="pb-3">

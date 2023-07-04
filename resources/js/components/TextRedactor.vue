@@ -1,22 +1,22 @@
 <template>
     <main class="ruzzifer-editor">
         <div v-if="editable" class="ruzzifer-toolbar">
-            <button type="button" class="ruzzifer-button" command='undo'><i class='fa fa-undo'></i></button>
-            <button type="button" class="ruzzifer-button" command='redo'><i class='fa fa-redo'></i></button>
-            <div class="ruzzifer-fore-wrapper">
+            <button type="button" class="ruzzifer-button" title="orqaga" command='undo'><i class='fa fa-undo'></i></button>
+            <button type="button" class="ruzzifer-button" title="oldinga" command='redo'><i class='fa fa-redo'></i></button>
+            <div class="ruzzifer-fore-wrapper" title="Yozuv rangi">
                 <button type="button" class="ruzzifer-button">
                     <i class='fa fa-font' style='color:#C96;'></i>
                 </button>
                 <div class="ruzzifer-fore-palette"></div>
             </div>
-            <div class="ruzzifer-back-wrapper">
+            <div class="ruzzifer-back-wrapper" title="Yozuv orqa foni">
                 <button type="button" class="ruzzifer-button">
                     <i class="fa fa-font ruzzifer-background"></i>
                 </button>
                 <div class="ruzzifer-back-palette"></div>
             </div>
 
-            <button type="button" class="ruzzifer-button" command='bold'>
+            <button type="button" title="Qalin" class="ruzzifer-button" command='bold'>
                 <i class='fa fa-bold'></i>
             </button>
             <button type="button" class="ruzzifer-button" command='italic'>
@@ -73,7 +73,7 @@
             <button @click="PrintElem" type="button" class="ruzzifer-button">
                 <i class="fa-regular fa-print"></i>
             </button>
-            <select v-model="selectFont" @input="myFunction" class="border-b py-0.5 outline-none">
+            <select v-model="selectFont" @input="fontFamily" class="border-b py-0.5 outline-none text-gray-600 mx-4">
                 <option value="Arial">Arial</option>
                 <option value="Courier New">Courier New</option>
                 <option value="Georgia">Georgia</option>
@@ -85,10 +85,28 @@
                 <option value="Sans-Serif">Sans Serif</option>
                 <option value="Verdana">Verdana</option>
             </select>
+            <select v-model="selectSize" @change="fontSize" class="border-b py-0.5 outline-none text-gray-600">
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+            </select>
         </div>
         <main class="ruzzifer-pages" @click="closeAllModals">
             <aside class="ruzzifer-absolute">
-                <section v-for="(page) in modelValue" class="ruzzifer-page-container">
+                <section v-for="(page) in modelValue" class="ruzzifer-page-container relative">
 
                     <main v-if="page.opened" @click.stop class="ruzzifer-page-paddings noprint">
                         <header class="ruzzifer-header noprint">
@@ -146,6 +164,7 @@
                         :contenteditable="editable"
                         @input="(event: any) => PageEdit(event, page)">
                     </div>
+                    <PrintPoints v-if="editable == false"  :pattern="selected" :number="Math.random()" :clickable="selected.backup == null" class="absolute bottom-3 w-full px-4"></PrintPoints>
                 </section>
             </aside>
         </main>
@@ -155,9 +174,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import Swal from '../modules/swal'
-const { modelValue, editable } = defineProps(['modelValue', 'editable'])
+import PrintPoints from './PrintPoints.vue'
+const { modelValue, editable , selected } = defineProps(['modelValue', 'editable', 'selected'])
 
 const selectFont = ref('Times New Roman')
+const selectSize = ref('14')
 
 const emit = defineEmits(['update:modelValue'])
 const defaultSet = {
@@ -227,15 +248,26 @@ function PrintElem()
     mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
 
-    // setTimeout(() => {
-    //     mywindow.print()
-    //     mywindow.close()
-    // }, 100)
+    setTimeout(() => {
+        mywindow.print()
+        mywindow.close()
+    }, 100)
 
     return true;
 }
 
-function myFunction() {
+function fontSize(){
+    const span = document.createElement('span')
+    span.style.fontSize = selectSize.value + 'pt'
+
+    //@ts-ignore
+    span.innerHTML =  document.getSelection()
+    
+    document.execCommand('insertHTML', false, span.outerHTML);
+}
+
+
+function fontFamily() {
         document.execCommand("fontName", false, selectFont.value); //replace monospace with selected font
         //@ts-ignore
         window.getSelection().empty(); // unselects the selected text
