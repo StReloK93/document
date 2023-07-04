@@ -7,7 +7,7 @@
                 </p>
                 <main class="flex items-center text-xs">
                     <span class="mr-3">
-                        {{ moment(patuser.updated_at).format('MM.DD H:m') }}
+                        {{ moment(patuser.updated_at).format('MM.DD HH:mm') }}
                     </span>
                     <i v-if="patuser.check" class="fa-regular fa-check"></i>
                     <i v-else class="fa-light fa-xmark"></i>
