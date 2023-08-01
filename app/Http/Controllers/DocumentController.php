@@ -33,11 +33,11 @@ class DocumentController extends Controller
     }
 
     public function negation(){
-        return Document::whereIn('organization_id', $this->positions())->forMyPositions()->has('negation')->get();
+        return Document::whereIn('organization_id', $this->positions())->has('negation')->get();
     }
 
     public function backup(){
-        return Document::whereIn('organization_id', $this->positions())->forMyPositions()->has('backup')->get();
+        return Document::whereIn('organization_id', $this->positions())->has('backup')->get();
     }
 
     public function show($id){
