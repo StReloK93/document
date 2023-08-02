@@ -154,6 +154,8 @@ class DocumentController extends Controller
         $doc->term = $term;
         $doc->save();
 
+        $doc->negation()->delete();
+
         return $doc->fresh();
 
     }

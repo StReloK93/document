@@ -1,13 +1,21 @@
 <template>
-    <Transition name="fade">
+    <TransitionGroup name="fade">
         <SelectedDocument
             v-if="pageData.selected"
             @deleted="deleted"
             :grid="grid"
+            @edit="openEdit"
             :id="pageData.selected.id"
             @close="pageData.selected = null"
         />
-    </Transition>
+        <EditDocument
+            class="z-50"
+            :grid="grid" 
+            v-if="pageData.editDocument" 
+            :id="pageData.editDocument"
+            @close="pageData.editDocument = null"
+        />
+    </TransitionGroup>
     <section class="h-full flex flex-col">
         <main class="flex justify-between items-center pb-2">
             <h3 class="text-xl text-gray-700">Rad etilgan hujjatlar</h3>
@@ -31,6 +39,7 @@
 
 <script setup lang="ts">
 import SelectedDocument from '../../components/Document/SelectedDocument.vue'
+import EditDocument from '../../components/Document/EditDocument.vue'
 import { reactive } from 'vue'
 import axios from '../../modules/axios';
 import column from './column';
@@ -40,7 +49,7 @@ const store = useStore()
 
 
 const pageData: any = reactive({
-    addDocument: false,
+    editDocument: false,
     documents: null,
     selected: null,
     columnDefs: column
@@ -51,8 +60,9 @@ const grid:any = reactive({api: null})
 
 axios.get('documentsnegations').then(({data}) => pageData.documents = data)
 
-function created(element){
-    grid.api.applyTransaction({add: [element],index: 0})
+function openEdit(id){
+    pageData.selected = null
+    pageData.editDocument = id
 }
 
 function deleted(selected){

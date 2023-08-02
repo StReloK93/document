@@ -105,7 +105,7 @@
                             :number="Math.random()" :clickable="pageData.selected.backup == null"></LinePoints>
                     </main>
                     <main class="flex justify-between">
-                        <aside v-if="store.state.user.id == pageData.selected.user_id && $route.name == 'process'">
+                        <aside v-if="store.state.user.id == pageData.selected.user_id">
                             <!-- edit deleted -->
                             <button v-if="store.getters.userRolls.includes(3)" :disabled="thisIsChecked == false" :class="{ '!text-gray-300 hover:bg-gray-200': thisIsChecked == false }"
                                 @click="deleted"
@@ -121,7 +121,7 @@
                             </button>
                             
 
-                            <button v-if="thisIsChecked == false"
+                            <button v-if="thisIsChecked == false && $route.name == 'process'"
                                 @click="pageData.backupToggle = true"
                                 class="px-5 py-1.5 rounded-sm shadow bg-pink-600 text-white hover:bg-pink-500">
                                 Hujjatni bekor qilish <i class="fa-duotone fa-triangle-exclamation ml-3"></i>

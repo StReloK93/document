@@ -98,7 +98,6 @@ function created(element){
 function openEdit(id){
     pageData.selected = null
     pageData.editDocument = id
-    
 }
 
 function deleted(selected){
