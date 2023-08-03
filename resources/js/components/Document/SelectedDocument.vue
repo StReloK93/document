@@ -210,7 +210,8 @@ function allow(negation) {
 }
 
 const thisIsChecked = computed(() => {
-    return pageData.selected?.positions.every((pos) => pos.check == false)
+    // return pageData.selected?.positions.every((pos) => pos.check == false)
+    return true
 })
 
 const Confirmtrue = computed(() => {
