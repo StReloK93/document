@@ -20,7 +20,7 @@
                 </button>
             </div>
             <main v-if="pageData.selected" class="h-full flex flex-col">
-                <section class="flex-grow flex relative">
+                <section class="flex-grow grid grid-cols-[minmax(300px,1fr),830px] relative">
                     <div class="flex-grow p-4 pt-3 border-b shadow-sm h-full">
                         <main class="mb-4 border-b border-gray-100 pb-3">
                             <p>

@@ -240,20 +240,16 @@ function PrintElem()
     const docu = document.querySelector('.ruzzifer-pages') as HTMLDivElement
     
     mywindow.document.write('<html><head><title>' + document.title  + '</title>')
+    mywindow.document.write('<link rel="stylesheet" href="/awesome/css/all.min.css" type="text/css" /></head>')
     mywindow.document.write('<link rel="stylesheet" href="/css/app.css" type="text/css" /></head>')
-    mywindow.document.write('<body onafterprint="self.close()">')
+    mywindow.document.write('<body>')
     mywindow.document.write(docu.innerHTML)
     mywindow.document.write('</body></html>')
-
-    mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
-
+    
     setTimeout(() => {
         mywindow.print()
-        mywindow.close()
-    }, 100)
-
-    return true;
+    }, 300)
 }
 
 function fontSize(){
