@@ -23,21 +23,23 @@ class DocumentController extends Controller
             return Document::whereIn('organization_id', $this->positions())
             ->has('negation', '=' , 0)
             ->has('backup', '=' , 0)
+            ->orderBy('id', 'desc')
             ->get();
         }
         return Document::whereIn('organization_id', $this->positions())
         ->forMyPositions()
         ->has('negation', '=' , 0)
         ->has('backup', '=' , 0)
+        ->orderBy('id', 'desc')
         ->get();
     }
 
     public function negation(){
-        return Document::whereIn('organization_id', $this->positions())->has('negation')->get();
+        return Document::whereIn('organization_id', $this->positions())->has('negation')->orderBy('id', 'desc')->get();
     }
 
     public function backup(){
-        return Document::whereIn('organization_id', $this->positions())->has('backup')->get();
+        return Document::whereIn('organization_id', $this->positions())->has('backup')->orderBy('id', 'desc')->get();
     }
 
     public function show($id){
@@ -94,9 +96,17 @@ class DocumentController extends Controller
             ['user_id', Auth::user()->id],
         ])->first();
         // Positions subscribes
-        $doc->positions()->delete();
         $positions = json_decode($request->positions);
-        $arr = $this->subsArr($positions, $doc);
+        $list_id = [];
+        foreach ($positions as $key => $position) {
+            $list_id[] = $position->id;
+        }
+
+        $doc->positions()->whereNotIn('position_id', $list_id)->delete();
+
+        $issetsArr = $doc->positions()->pluck('position_id')->toArray();
+        
+        $arr = $this->subsArr($positions,$issetsArr, $doc);
         Subscribe::insert($arr);
         // asdasd
 
@@ -178,16 +188,18 @@ class DocumentController extends Controller
     }
 
 
-    protected function subsArr($positions, $doc){
+    protected function subsArr($positions,$isset, $doc){
         $arr = [];
         foreach ($positions as $key => $position) {
-            $arr[] = [
-                'document_id' => $doc->id,
-                'position_id' => $position->id,
-                'check' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+            if(in_array($position->id ,$isset) == false){
+                $arr[] = [
+                    'document_id' => $doc->id,
+                    'position_id' => $position->id,
+                    'check' => false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
         return $arr;
     }
