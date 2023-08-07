@@ -68,7 +68,7 @@ class DocumentController extends Controller
         
         $positions = json_decode($request->positions);
 
-        $arr = $this->subsArr($positions, $doc);
+        $arr = $this->subsArr($positions,[], $doc);
         Subscribe::insert($arr);
 
 
