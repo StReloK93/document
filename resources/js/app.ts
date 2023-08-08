@@ -14,6 +14,12 @@ import "vue-multiselect/dist/vue-multiselect.css"
 import 'swiper/css/pagination'
 import 'swiper/css'
 
+
+if(localStorage.getItem('filter') == null){
+    localStorage.setItem('filter', 'false')
+}
+
+
 store.dispatch('getUser').then(() =>{
     createApp(App)
     .component('AgGrid', AgGridVue)

@@ -25,9 +25,21 @@
     <section class="h-full flex flex-col">
         <main class="flex justify-between items-center pb-2">
             <h3 class="text-xl text-gray-700">Tasdiqlash jarayonidagi hujjatlar</h3>
-            <button v-if="store.getters.userRolls.includes(1)" @click="pageData.addDocument = true">
-                <i class="fa-sharp fa-regular fa-plus text-pink-500 text-xl px-3 py-1 bg-gray-50 hover:bg-pink-200 active:bg-gray-200 shadow-sm border border-pink-200"></i>
-            </button>
+            <div class="flex items-center">
+                <label for="filtered">
+                    <span class="text-sm text-gray-500">
+                        Mening  hujjatlarim
+                    </span>
+                    <main class="w-8 h-4 ml-4 bg-white inline-flex rounded-md shadow items-center px-0.5">
+                        <div :class="{ '!bg-pink-500 ml-[16px]': pageData.onlyMy }"
+                            class="w-3 h-3 rounded-full bg-gray-500 transition-all"></div>
+                    </main>
+                </label>
+                <input hidden id="filtered" type="checkbox" class="mx-4" v-model="pageData.onlyMy" @change="changeFilter">
+                <button v-if="store.getters.userRolls.includes(1)" class="ml-4" @click="pageData.addDocument = true">
+                    <i class="fa-sharp fa-regular fa-plus text-pink-500 text-xl px-3 py-1 bg-gray-50 hover:bg-pink-200 active:bg-gray-200 shadow-sm border border-pink-200"></i>
+                </button>
+            </div>
         </main>
         <main class="flex-grow">
             <agGrid 
@@ -39,7 +51,7 @@
                 :columnDefs="pageData.columnDefs"
                 @rowClicked="onSelectionChanged"
                 :doesExternalFilterPass="doesExternalFilterPass"
-                :isExternalFilterPresent="() => filter != 'all'"
+                :isExternalFilterPresent="() => true"
                 @grid-ready="(params) => grid.api = params.api"
                 :animateRows="true"
             >
@@ -57,19 +69,29 @@ import axios from '../../modules/axios'
 import moment from 'moment'
 import column from './column'
 import { useStore } from 'vuex'
-
 const store = useStore()
-const filter = ref('contain')
 
 function doesExternalFilterPass(node){
-    return node.data.positions.every((position) => position.check == true) == false
+    
+    const allChecked = node.data.positions.every((position) => position.check == true) == false
+    if(pageData.onlyMy){
+        return allChecked && node.data.user_id == store.state.user.id
+    }
+    return allChecked
 }
+
+function changeFilter(){
+    localStorage.setItem('filter', pageData.onlyMy)
+    grid.api.onFilterChanged()
+}
+
 
 const pageData: any = reactive({
     addDocument: false,
     editDocument: null,
     documents: null,
     selected: null,
+    onlyMy: JSON.parse(localStorage.getItem('filter') as string),
     rowClassRules: {
         '!bg-pink-50': function(params) { return params.data.term != null; },
     },

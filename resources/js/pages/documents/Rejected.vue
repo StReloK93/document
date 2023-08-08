@@ -19,6 +19,17 @@
     <section class="h-full flex flex-col">
         <main class="flex justify-between items-center pb-2">
             <h3 class="text-xl text-gray-700">Rad etilgan hujjatlar</h3>
+            <label for="filtered">
+                <span class="text-sm text-gray-500">
+                    Mening  hujjatlarim
+                </span>
+                <main class="w-8 h-4 ml-4 bg-white inline-flex rounded-md shadow items-center px-0.5">
+                    <div :class="{ '!bg-pink-500 ml-[16px]': pageData.onlyMy }"
+                        class="w-3 h-3 rounded-full bg-gray-500 transition-all"></div>
+                </main>
+            </label>
+            <input hidden id="filtered" type="checkbox" class="mx-4" v-model="pageData.onlyMy"
+                @change="changeFilter">
         </main>
         <main class="flex-grow">
             <agGrid 
@@ -31,6 +42,8 @@
                 @rowClicked="onSelectionChanged"
                 @grid-ready="(params) => grid.api = params.api"
                 :animateRows="true"
+                :doesExternalFilterPass="doesExternalFilterPass"
+                :isExternalFilterPresent="() => true"
             >
             </agGrid>
         </main>
@@ -46,13 +59,24 @@ import column from './column';
 import { useStore } from 'vuex'
 const store = useStore()
 
+function doesExternalFilterPass(node) {
 
+    if (pageData.onlyMy == true) return node.data.user_id == store.state.user.id
+    else return true
+
+}
+
+function changeFilter(){
+    localStorage.setItem('filter', pageData.onlyMy)
+    grid.api.onFilterChanged()
+}
 
 const pageData: any = reactive({
     editDocument: false,
     documents: null,
     selected: null,
-    columnDefs: column
+    columnDefs: column,
+    onlyMy: JSON.parse(localStorage.getItem('filter') as string) 
 })
 
 const grid:any = reactive({api: null})
