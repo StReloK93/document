@@ -39,7 +39,9 @@
     width: 100%;
 }
 
-
+.ruzzifer-page * {
+    font-size: inherit;
+}
 
 .ruzzifer-page {
     font-size: 14pt;
