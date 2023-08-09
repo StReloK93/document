@@ -95,7 +95,7 @@ const pageData: any = reactive({
     rowClassRules: {
         '!bg-pink-50': function(params) { return params.data.term != null; },
     },
-    columnDefs: [...column, {
+    columnDefs: [...column(store.getters.userPositions), {
 
         field: "term", headerName: 'Muddat' , width: 100, cellClass: ['font-semibold'],
         cellRenderer: (cell) => {

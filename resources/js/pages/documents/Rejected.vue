@@ -75,7 +75,7 @@ const pageData: any = reactive({
     editDocument: false,
     documents: null,
     selected: null,
-    columnDefs: column,
+    columnDefs: column(store.getters.userPositions),
     onlyMy: JSON.parse(localStorage.getItem('filter') as string) 
 })
 
