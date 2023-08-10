@@ -13,7 +13,7 @@
                     <i v-if="patuser.check" class="fa-regular fa-check"></i>
                     <i v-else class="fa-light fa-xmark"></i>
                 </main>
-                <div class="text-[10px]">
+                <div v-if="patuser.check" class="text-[10px]">
                     {{ patuser.user?.name }}
                 </div>
             </footer>
