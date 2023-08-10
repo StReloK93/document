@@ -17,6 +17,7 @@ class CreateSubscribesTable extends Migration
             $table->id();
             $table->integer('document_id');
             $table->integer('position_id');
+            $table->integer('user_id');
             $table->boolean('check')->default(false);
             $table->timestamps();
         });

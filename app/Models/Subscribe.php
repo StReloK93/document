@@ -10,7 +10,8 @@ class Subscribe extends Model
     use HasFactory;
     
     protected $with = [
-        'position'
+        'position',
+        'user'
     ];
 
     protected $fillable = [
@@ -28,5 +29,10 @@ class Subscribe extends Model
     public function position()
     {
         return $this->belongsTo(Position::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

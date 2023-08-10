@@ -3,15 +3,19 @@
         <section v-for="(patuser, index) in pattern.positions" :key="index" class="flex justify-center">
             <footer class="inline-flex items-center flex-col w-28 text-stone-500">
                 <p class="text-center leading-none text-[13px] ">
-                    {{ patuser.position.name }}
+                    {{ patuser.position.name }} 
                 </p>
                 <main class="flex items-center text-xs">
+
                     <span class="mr-3">
                         {{ moment(patuser.updated_at).format('MM.DD HH:mm') }}
                     </span>
                     <i v-if="patuser.check" class="fa-regular fa-check"></i>
                     <i v-else class="fa-light fa-xmark"></i>
                 </main>
+                <div class="text-[10px]">
+                    {{ patuser.user?.name }}
+                </div>
             </footer>
         </section>
     </aside>
