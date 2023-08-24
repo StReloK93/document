@@ -30,9 +30,6 @@
     position: relative;
     flex-grow: 1;
     overflow-y: auto;
-    align-items: center;
-    padding: 17px 0;
-    justify-content: center;
 }
 
 .ruzzifer-page img {
@@ -49,7 +46,6 @@
     font-family: initial;
     word-wrap: break-word;
     outline: none;
-    height: 100%;
     width: 210mm;
     height: 297mm;
     margin-bottom: 15px;

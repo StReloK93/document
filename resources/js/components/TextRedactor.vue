@@ -1,5 +1,5 @@
 <template>
-    <main class="ruzzifer-editor">
+    <main class="ruzzifer-editor print:!w-[inherit]">
         <div v-if="editable" class="ruzzifer-toolbar">
             <button type="button" class="ruzzifer-button" title="orqaga" command='undo'><i class='fa fa-undo'></i></button>
             <button type="button" class="ruzzifer-button" title="oldinga" command='redo'><i class='fa fa-redo'></i></button>
@@ -58,9 +58,6 @@
             <button type="button" class="ruzzifer-button" command='unlink'>
                 <i class='fa fa-unlink'></i>
             </button>
-            <!-- <button type="button" class="ruzzifer-button" command='insertimage'>
-                <i class='fa fa-image'></i>
-            </button> -->
             <button type="button" class="ruzzifer-button" command='subscript'>
                 <i class='fa fa-subscript'></i>
             </button>
@@ -69,9 +66,6 @@
             </button>
             <button @click="PageCreate" type="button" class="ruzzifer-button">
                 <i class="fa-light fa-plus"></i>
-            </button>
-            <button @click="PrintElem" type="button" class="ruzzifer-button">
-                <i class="fa-regular fa-print"></i>
             </button>
             <select v-model="selectFont" @input="fontFamily" class="border-b py-0.5 outline-none text-gray-600 mx-4">
                 <option value="Arial">Arial</option>
@@ -104,8 +98,8 @@
                 <option value="24">24</option>
             </select>
         </div>
-        <main class="ruzzifer-pages" @click="closeAllModals">
-            <aside class="ruzzifer-absolute">
+        <main class="ruzzifer-pages print:!p-0" @click="closeAllModals">
+            <aside class="ruzzifer-absolute print:!static">
                 <section v-for="(page) in modelValue" class="ruzzifer-page-container relative">
 
                     <main v-if="page.opened" @click.stop class="ruzzifer-page-paddings noprint">
@@ -164,7 +158,13 @@
                         :contenteditable="editable"
                         @input="(event: any) => PageEdit(event, page)">
                     </div>
-                    <PrintPoints v-if="editable == false"  :pattern="selected" :number="Math.random()" :clickable="selected.backup == null" class="absolute bottom-3 w-full px-4"></PrintPoints>
+                    <canvas v-if="QrCodeIsset" class="qrcode absolute bottom-20 w-full right-12"></canvas>
+                    <PrintPoints
+                        v-if="editable == false" 
+                        :pattern="selected" :number="Math.random()"
+                        :clickable="selected.backup == null"
+                        class="absolute bottom-3 w-full px-4"
+                    />
                 </section>
             </aside>
         </main>
@@ -172,30 +172,28 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Swal from '../modules/swal'
 import PrintPoints from './PrintPoints.vue'
-const { modelValue, editable , selected } = defineProps(['modelValue', 'editable', 'selected'])
-
+const QRCode = require('qrcode')
+const { modelValue, editable , selected, print } = defineProps(['modelValue', 'editable', 'selected', 'print'])
 const selectFont = ref('Times New Roman')
 const selectSize = ref('14')
 
 const emit = defineEmits(['update:modelValue'])
 const defaultSet = {
-    html: '',
-    settings: {
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 15,
-        paddingBottom: 15,
-    },
-    opened: false,
-    menuOpened: false,
+    html: '', opened: false, menuOpened: false,
+    settings: { paddingLeft: 15, paddingRight: 15, paddingTop: 15, paddingBottom: 15},
 }
 
 if(modelValue == null || modelValue.length == 0) modelValue[0] = structuredClone(defaultSet)
 
 
+
+const QrCodeIsset = computed(() => {
+    if(selected) return selected.positions.some((pos) => pos.position.priority == 1) && selected.positions.every((pos) => pos.check == true)
+    else return false
+})
 function PageCreate(){
     modelValue.push(structuredClone(defaultSet))
 }
@@ -233,45 +231,22 @@ function closeAllModals(){
     })
 }
 
-
-function PrintElem()
-{
-    const mywindow: any = window.open('', 'mywindow', 'status=1,width=800,height=600')
-    const docu = document.querySelector('.ruzzifer-pages') as HTMLDivElement
-    
-    mywindow.document.write('<html><head><title>' + document.title  + '</title>')
-    mywindow.document.write('<link rel="stylesheet" href="/awesome/css/all.min.css" type="text/css" /></head>')
-    mywindow.document.write('<link rel="stylesheet" href="/css/app.css" type="text/css" /></head>')
-    mywindow.document.write('<body>')
-    mywindow.document.write(docu.innerHTML)
-    mywindow.document.write('</body></html>')
-    mywindow.focus(); // necessary for IE >= 10*/
-    
-    setTimeout(() => {
-        mywindow.print()
-    }, 300)
-}
-
 function fontSize(){
-    const span = document.createElement('span')
+    const span:any = document.createElement('span')
     span.style.fontSize = selectSize.value + 'pt'
-
-    //@ts-ignore
     span.innerHTML =  document.getSelection()
-    
     document.execCommand('insertHTML', false, span.outerHTML);
 }
 
 
 function fontFamily() {
-        document.execCommand("fontName", false, selectFont.value); //replace monospace with selected font
-        //@ts-ignore
-        window.getSelection().empty(); // unselects the selected text
-    }
-
-defineExpose({ PrintElem })
+    document.execCommand("fontName", false, selectFont.value);
+    //@ts-ignore
+    window.getSelection().empty();
+}
 
 onMounted(() => {
+
     const colorPalette = ['#000000', '#FF9966', '#6699FF', '#99FF66', '#CC0000', '#00CC00', '#0000CC', '#333333', '#0066FF', '#FFFFFF']
     const forePalette = document.querySelector('.ruzzifer-fore-palette') as HTMLDivElement
     const backPalette = document.querySelector('.ruzzifer-back-palette') as HTMLDivElement
@@ -282,9 +257,20 @@ onMounted(() => {
         }
     }
 
-    const ruzziferPages = document.querySelectorAll('.ruzzifer-page')
-
+    var ruzziferPages: any = null
+    if(print) ruzziferPages = document.querySelectorAll('#printpage .ruzzifer-page')
+    else ruzziferPages = document.querySelectorAll('.ruzzifer-page')
+    
+    
+    
+    const qrcode = document.querySelectorAll('.qrcode')
     ruzziferPages.forEach((element, index) => {
+        if(QrCodeIsset.value){
+            const director = selected.positions.find((pos) => pos.position.priority == 1)
+            QRCode.toCanvas(qrcode[index],`Document: ${selected.id}, Tasdiqladi: ${director.user.name}` , {
+                width: 135
+            })
+        }
         element.innerHTML = modelValue[index].html
     })
 

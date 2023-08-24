@@ -28,15 +28,26 @@
 import axios from '../../modules/axios'
 import { ref, reactive } from 'vue'
 import swal from '../../modules/swal'
-const grid: any = reactive({
-    api: null
-})
+const grid: any = reactive({api: null})
 
 const types = ref([])
 
 const columns = reactive([
     { field: "id", headerName: 'ID', width: 60 },
-    { field: "name", headerName: 'Nomi', flex: 1 , editable: true},
+    { field: "name", headerName: 'Nomi', flex: 1 , editable: true },
+    {
+        field: "priority",
+        headerName: 'Asosiy',
+        width: 60,
+        editable: true,
+        cellRenderer: (params) => {
+            if(params.value) return '<i class="fa-sharp fa-solid fa-toggle-on text-pink-600"></i>'
+            else return '<i class="fa-sharp fa-solid fa-toggle-off text-gray-300"></i>'
+        },
+        onCellClicked: (params) => {
+            params.node.setDataValue('priority', !Boolean(params.value))
+        }
+    },
     { 
         headerName: '',
         width: 60,
@@ -50,17 +61,12 @@ axios.get('positions').then(({ data }) => types.value = data)
 
 
 function storeType() {
-    axios.post('positions', { name: 'nomlang' }).then(({ data }) => {
-        grid.api.applyTransaction({
-            add: [data],
-        });
-    })
+    axios.post('positions').then(({ data }) => grid.api.applyTransaction({add: [data]}))
 }
 
 function cellEdit(cell) {
-    const rowNode = grid.api.getRowNode(cell.data.id)
-    axios.patch(`positions/${cell.data.id}`, { name: cell.value }).then(() => {
-        rowNode.setDataValue('name', cell.value)
+    axios.patch(`positions/${cell.data.id}`, cell.data).then(({data}) => {
+        cell.node.setData(data)
     })
 }
 

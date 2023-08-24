@@ -5,45 +5,20 @@
                 <p class="text-center leading-none text-[13px] ">
                     {{ patuser.position.name }} 
                 </p>
-                <main class="flex items-center text-xs">
-
-                    <span class="mr-3">
-                        {{ moment(patuser.updated_at).format('MM.DD HH:mm') }}
-                    </span>
-                    <i v-if="patuser.check" class="fa-regular fa-check"></i>
-                    <i v-else class="fa-light fa-xmark"></i>
-                </main>
                 <div v-if="patuser.check" class="text-[10px]">
                     {{ patuser.user?.name }}
                 </div>
+                <main class="flex items-center text-xs">
+                    <span class="mr-3">
+                        {{ moment(patuser.updated_at).format('YYYY.MM.DD HH:mm') }}
+                    </span>
+                </main>
             </footer>
         </section>
     </aside>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import moment from 'moment'
-import { useStore } from 'vuex'
-const emit = defineEmits(['subscribe'])
-const store = useStore()
-
-const { pattern, number , clickable } = defineProps(['pattern', 'number', 'clickable'])
-
-const randomId:any = ref(`list${number}`)
-
-function getId(index) {
-    if (index == 0 || index == 1) return randomId.value
-}
-
-function redalert(index){
-    return index - 1
-}
-
-
-function subscribe(bool, patuser){
-    if(bool && clickable) emit('subscribe', patuser)
-}
-
-
+const { pattern } = defineProps(['pattern'])
 </script>

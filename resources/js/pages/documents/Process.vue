@@ -54,8 +54,7 @@
                 :isExternalFilterPresent="() => true"
                 @grid-ready="(params) => grid.api = params.api"
                 :animateRows="true"
-            >
-            </agGrid>
+            />
         </main>
     </section>
 </template>

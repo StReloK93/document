@@ -15,13 +15,14 @@ class PositionController extends Controller
 
     public function store(Request $request){
         return Position::create([
-            'name' => $request->name
+            'name' => 'nomlang'
         ]);
     }
 
     public function update($id, Request $request){
         $type = Position::find($id);
         $type->name = $request->name;
+        $type->priority = $request->priority;
         $type->save();
         return $type;
     }

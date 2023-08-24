@@ -66,9 +66,10 @@
                             <div>
                                 {{ moment(pageData.selected.term).format('DD.MM.YYYY') }}
                             </div>
+                            {{ store.state.selected }}
                         </main>
                         <main class="mb-4 flex justify-between">
-                            <button v-if="$route.name == 'finished'" @click="redactor.PrintElem()" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
+                            <button v-if="$route.name == 'finished'" @click="selestial" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
                                 <i class="fa-solid fa-print text-pink-500"></i>
                             </button>
                             <button v-if="pageData.selected.images.length" @click="pageData.imagesToggle = true"
@@ -97,15 +98,28 @@
                             </main>
                         </main>
                     </div>
+
+
+
+
                     <TextRedactor ref="redactor" class="h-full" v-model="pageData.selected.html" :selected="pageData.selected" :editable="false"></TextRedactor>
+
+
+
+
+
                 </section>
                 <section class="h-52 p-4 flex flex-col justify-between">
                     <main class="pb-3">
-                        <LinePoints @subscribe="(patuser) => confirm(patuser, null)" :pattern="pageData.selected"
-                            :number="Math.random()" :clickable="pageData.selected.backup == null"></LinePoints>
+                        <LinePoints
+                            @subscribe="(patuser) => confirm(patuser, null)"
+                            :pattern="pageData.selected"
+                            :number="Math.random()"
+                            :clickable="pageData.selected.backup == null"
+                        />
                     </main>
                     <main class="flex justify-between">
-                        <aside v-if="store.state.user.id == pageData.selected.user_id">
+                        <aside v-if="store.state.user.id == pageData.selected.user_id && $route.name != 'finished'">
                             <!-- edit deleted -->
                             <button v-if="store.getters.userRolls.includes(3)" :disabled="thisIsChecked == false" :class="{ '!text-gray-300 hover:bg-gray-200': thisIsChecked == false }"
                                 @click="deleted"
@@ -177,9 +191,12 @@ const pdfcanvas = ref()
 const { id, grid } = defineProps(['id', 'grid'])
 const store = useStore()
 
+
+function selestial(){
+    store.state.selected = pageData.selected
+}
 axios.get(`documents/${id}`).then(({ data }) => {
     pageData.selected = data
-    
     pageData.selected.html = JSON.parse(pageData.selected.html)
     pageData.pdfFile = '/pdf/' + data.src
 })
