@@ -43,9 +43,16 @@
     }
 
     .qrcode{
-        @apply inline-block w-[135px] h-[135px] opacity-0
+        @apply inline-flex w-[135px] h-[135px] opacity-0 absolute top-[-60px] left-0
     }
     
+    .real-qrcode{
+        @apply inline-flex w-[135px] h-[135px] absolute top-[-60px] left-0
+    }
+
+    .span-qr{
+        @apply inline-flex w-[135px] relative text-transparent
+    }
 }
 
 

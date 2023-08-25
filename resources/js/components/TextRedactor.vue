@@ -123,9 +123,7 @@ onMounted(() => {
         const director = selected.positions.find((pos) => pos.position.priority == 1)
         const qrcode = document.getElementById('qrcode')
         const canvas = document.createElement('canvas')
-        canvas.classList.add('inline-block')
-        canvas.classList.add('w-[135px]')
-        canvas.classList.add('h-[135px]')
+        canvas.classList.add('real-qrcode')
         qrcode?.parentNode?.replaceChild(canvas, qrcode)
 
         QRCode.toCanvas(canvas,`Hujjat: ${selected.id}, Imzoladi: ${director.user.name}` , {

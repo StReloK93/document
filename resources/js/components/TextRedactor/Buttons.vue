@@ -129,11 +129,16 @@ function fontFamily() {
 
 
 function positionQrCode(){
-    const canvas = document.createElement('img')
-    canvas.src = '/images/qrcode.png'
-    canvas.id = 'qrcode'
-    canvas.classList.add('qrcode')
-    document.execCommand('insertHTML', false, canvas.outerHTML);
+    const img = document.createElement('img')
+    img.src = '/images/qrcode.png'
+    img.id = 'qrcode'
+    img.classList.add('qrcode')
+
+    const span = document.createElement('i')
+    span.classList.add('span-qr')
+    span.innerHTML = 'aaa' + img.outerHTML
+
+    document.execCommand('insertHTML', false, span.outerHTML);
 }
 
 

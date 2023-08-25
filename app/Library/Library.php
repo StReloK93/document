@@ -5,6 +5,9 @@ namespace App\Library;
 use Image;
 use File;
 
+// (I)nstagrammda goh paydo bo'lar.
+// (M)ing kuttirib bir yozib qolar.
+// (O)
 class Library
 {
     public static function createImage($image , $id){
