@@ -41,8 +41,17 @@
     .absolute-black-full{
         @apply absolute top-0 left-0 bg-black bg-opacity-40 w-full h-full
     }
+
+    .qrcode{
+        @apply inline-block w-[135px] h-[135px] opacity-0
+    }
+    
 }
 
+
+.editable img{
+    opacity: 0!important;
+}
 @media print {
 	.print{
         display: inherit;
