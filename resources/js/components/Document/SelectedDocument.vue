@@ -66,7 +66,6 @@
                             <div>
                                 {{ moment(pageData.selected.term).format('DD.MM.YYYY') }}
                             </div>
-                            {{ store.state.selected }}
                         </main>
                         <main class="mb-4 flex justify-between">
                             <button v-if="$route.name == 'finished'" @click="selestial" class="px-4 py-3 bg-gray-100 shadow hover:bg-gray-200">
