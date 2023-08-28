@@ -10,4 +10,9 @@ class Position extends Model
     use HasFactory;
     
     protected $fillable = ['name', 'priority'];
+
+
+    protected $casts = [
+        'priority' => 'boolean',
+    ];
 }
